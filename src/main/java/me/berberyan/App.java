@@ -13,7 +13,8 @@ import org.apache.logging.log4j.Logger;
 
 public class App {
 	private static final Logger LOGGER = LogManager.getLogger(App.class); 
-
+	private App(){}
+	
     public static void main( String[] args ) throws IOException {
 
     		LOGGER.debug("main() invoked");
