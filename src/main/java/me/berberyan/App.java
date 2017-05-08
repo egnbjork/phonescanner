@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,12 @@ public class App {
     				.filter(p -> p.toString().endsWith(".java"))
     				.collect(Collectors.toList());
     		
-    		testFiles.stream().forEach(LOGGER::debug);
-
+    		for(Path path : testFiles) {
+    			try (Stream<String> stream = Files.lines(path)) {
+    				stream.forEach(System.out::println);
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
     }
 }
