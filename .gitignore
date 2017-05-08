@@ -1,0 +1,17 @@
+#Maven
+target
+
+# Eclipse
+.project
+.settings
+.classpath
+
+#MacOS
+.DS_Store
+
+#Sonar
+appcheck.sh
+
+#project
+temp
+logs
