@@ -222,6 +222,16 @@ public class PhoneScannerTest {
 
 		assertEquals(expectedList, actualList);
 	}
+	
+	@Test
+	public void extractPhone_spaceBeforeNumber_symbolInsideNumber_TwoNumbersOneString_good() {
+		String rawNumber = "С c8888888Стрехзначным кодом города+7812 c1234567С трехзначным кодом города";
+
+		List<String> actualList = ps.extractData(rawNumber);
+		List<String> expectedList = Arrays.asList("+7 (812) 888-8888", expected);
+
+		assertEquals(expectedList, actualList);
+	}
 
 	@Test
 	public void extractPhone_spaceBeforeNumber_manySymbolsInsideNumber_good() {

@@ -1,38 +1,32 @@
 package berberyan;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+public class AppTest {
+
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	                          
+	@Before
+	public void setUp() {
+		System.setOut(new PrintStream(outContent)); 
+	}
+
+	@After
+	public void cleanUpStreams() {
+	    System.setOut(null);
+	}
+	
+	@Test
+	public void mainTest_noArgs() {
+		App.main(null);
+		String expected = "+7 (812) 123-4567\n+7 (555) 123-4567\n+7 (812) 111-4567\n+7 (812) 123-4567\n+7 (812) 130-4567\n+7 (812) 888-8888\n+7 (812) 987-6543\n+7 (555) 123-4567\n+7 (812) 111-4567\n+7 (812) 123-4567\n+7 (812) 130-4567\n+7 (812) 888-8888\n+7 (812) 987-6543\n"; 
+	    assertEquals(expected, outContent.toString());
+	}
 }
