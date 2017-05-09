@@ -1,4 +1,4 @@
-package me.berberyan.service;
+package berberyan.service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +25,12 @@ public class PhoneScanner {
 		entry = entry.replaceAll("[^\\d\\+\\(\\)\\s]", "").trim();
 		LOGGER.debug("clean entry is " + entry);
 		Matcher m = pattern.matcher(entry);
+		
 		String country;
 		String city;
 		String firstPart;
 		String lastPart;
+		
 		if(m.find()) {
 			country = (m.group(1) == null) ? defaultCountryCode : m.group(1).trim();
 			city = (m.group(2) == null) ? defaultCityCode : m.group(2).trim();
@@ -48,7 +50,7 @@ public class PhoneScanner {
 		return null;
 	}
 	
-	public List<String> extractPhones(String entry) {
+	public static List<String> extractPhones(String entry) {
 		String[] phones = entry.split("[^\\d]+");
 		LOGGER.debug("total " + phones.length + " entries");
 		return Arrays.asList(phones).stream()

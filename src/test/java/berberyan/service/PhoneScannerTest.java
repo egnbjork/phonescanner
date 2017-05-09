@@ -1,4 +1,4 @@
-package me.berberyan.service;
+package berberyan.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+
+import berberyan.service.PhoneScanner;
 
 public class PhoneScannerTest {
 	private static final Logger LOGGER = LogManager.getLogger(PhoneScannerTest.class); 
