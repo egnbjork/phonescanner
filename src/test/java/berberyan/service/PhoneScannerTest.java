@@ -23,7 +23,7 @@ public class PhoneScannerTest {
 		ps = new PhoneScanner();
 		expected = "+7 (812) 123-4567";
 	}
-	
+
 	@Test
 	public void findPhone_clean_spacesDashesBraces_true() {
 		String phone = "+7 (555) 123-4567";
@@ -40,7 +40,7 @@ public class PhoneScannerTest {
 	//	123-4567
 	@Test
 	public void findPhone_clean_spacesDashes_true() {
-		String phone = "+7 812 777-4567";
+		String phone = "+7 812 111-4567";
 
 		boolean actual = ps.isGood(phone);
 

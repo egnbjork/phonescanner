@@ -23,7 +23,7 @@ public class DataExtractor {
 		for(Path path : filePaths) {
 			try (Stream<String> stream = Files.lines(path)) {
 				stream.map(parser::extractData)
-				.flatMap(n -> n.stream())
+				.flatMap(DataExtractor::flatten)
 				.distinct()
 				.sorted()
 				.collect(Collectors.toCollection(() -> data));
@@ -33,5 +33,9 @@ public class DataExtractor {
 			}
 		}
 		return data;	
+	}
+	
+	private static Stream<String> flatten(List<String> listStream) {
+		return listStream.stream();
 	}
 }
