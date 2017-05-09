@@ -1,48 +1,33 @@
 package berberyan;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import berberyan.exceptions.DataExtractionException;
+import berberyan.exceptions.FileScannerException;
+import berberyan.service.DataExtractor;
 import berberyan.service.FileScanner;
+import berberyan.service.Parser;
 import berberyan.service.PhoneScanner;
 
 public class App {
 	private static final Logger LOGGER = LogManager.getLogger(App.class); 
 	private App(){}
 	
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args ) throws FileScannerException, DataExtractionException {
 
-    		LOGGER.debug("main() invoked");
-    		
     		FileScanner sf = new FileScanner();
     		List<Path> testFiles = sf.getFileList(".", ".java");
+    		Parser parser = new PhoneScanner();
     		
-//    		List<String> phoneNumbers = new ArrayList();
-
-    		for(Path path : testFiles) {
-    			try (Stream<String> stream = Files.lines(path)) {
-    				List<String> phones = stream.map(PhoneScanner::extractPhones)
-    				.flatMap(n -> n.stream())
-    				.distinct()
-    				.sorted()
-    				.collect(Collectors.toList());
-    				
-    				System.out.println(Arrays.toString(phones.toArray()));
-//    				phoneNumbers = stream
-//    						.flatmap(PhoneScanner::extractPhones)
-//    						.collect(Collectors.toList());
-//    				stream.forEach(System.out::println);
-    			} catch (IOException e) {
-    				e.printStackTrace();
-    			}
-    		}
+    		DataExtractor de = new DataExtractor();
+    		
+    		List<String> phones = de.parseFiles(testFiles, parser);
+    		
+    		phones.stream().forEach(System.out::println);
     }
 }

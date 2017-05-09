@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,11 +13,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import berberyan.service.PhoneScanner;
-
 public class PhoneScannerTest {
 	private static final Logger LOGGER = LogManager.getLogger(PhoneScannerTest.class); 
-
 	PhoneScanner ps;
 	String expected;
 
@@ -25,12 +23,24 @@ public class PhoneScannerTest {
 		ps = new PhoneScanner();
 		expected = "+7 (812) 123-4567";
 	}
+	
+	@Test
+	public void findPhone_clean_spacesDashesBraces_true() {
+		String phone = "+7 (555) 123-4567";
+
+		List<String> getPhoneListExpected = new ArrayList<>();
+		getPhoneListExpected.add(phone);
+		
+		String phoneTwo = "boo is+7 (555) 123-4567sss";
+		List<String> getPhoneListActual = ps.extractData(phoneTwo);
+		assertEquals(getPhoneListExpected, getPhoneListActual);
+	}
 
 	//	+7 812 номер
 	//	123-4567
 	@Test
 	public void findPhone_clean_spacesDashes_true() {
-		String phone = "+7 812 123-4567";
+		String phone = "+7 812 777-4567";
 
 		boolean actual = ps.isGood(phone);
 
@@ -60,19 +70,28 @@ public class PhoneScannerTest {
 	//	123-45-67
 	@Test
 	public void findPhone_clean_spacesManyDashes_true() {
-		String phone = "+7 812 123-45-67";
+		String phone = "+7 812 987-65-43";
 
 		boolean actual = ps.isGood(phone);
 
 		assertTrue(actual);
 	}
+	
+	@Test
+	public void findPhone_clean_spacesManyDashesQuotes() {
+		String phone = "\"+7 812 987-65-43\"";
+
+		String actual = PhoneScanner.getPhone(phone);
+		expected = "+7 (812) 987-6543";
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	public void getPhone_spacesManyDashes() {
-		String rawNumber = "С трехзначным кодом города+7 812 123-45-67С трехзначным кодом города";
+		String rawNumber = "С трехзначным кодом города+7 812 987-65-43С трехзначным кодом города";
 
 		String actual = PhoneScanner.getPhone(rawNumber);
-
+		expected = "+7 (812) 987-6543";
 		assertEquals(expected, actual);
 	}
 
@@ -198,7 +217,7 @@ public class PhoneScannerTest {
 	public void extractPhone_spaceBeforeNumber_symbolInsideNumber_good() {
 		String rawNumber = "С трехзначным кодом города+7812 c1234567С трехзначным кодом города";
 
-		List<String> actualList = ps.extractPhones(rawNumber);
+		List<String> actualList = ps.extractData(rawNumber);
 		List<String> expectedList = Arrays.asList(expected);
 
 		assertEquals(expectedList, actualList);
@@ -208,7 +227,7 @@ public class PhoneScannerTest {
 	public void extractPhone_spaceBeforeNumber_manySymbolsInsideNumber_good() {
 		String rawNumber = "С трехзначным кодом города+7812 casd1234567С трехзначным кодом города";
 
-		List<String> actualList = ps.extractPhones(rawNumber);
+		List<String> actualList = ps.extractData(rawNumber);
 		List<String> expectedList = Arrays.asList(expected);
 
 		assertEquals(expectedList, actualList);
@@ -458,7 +477,7 @@ public class PhoneScannerTest {
 	//	+7812 номер
 	@Test
 	public void findPhone_dirty_spaceBeforeNumber_false() {
-		String phone = "$$+7812 1234567";
+		String phone = "$$+7812 1304567";
 
 		boolean actual = ps.isGood(phone);
 
