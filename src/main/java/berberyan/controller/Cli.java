@@ -13,6 +13,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import berberyan.config.ConfigLoader;
 import berberyan.exceptions.DataExtractionException;
 import berberyan.exceptions.FileScannerException;
 import berberyan.service.DataExtractor;
@@ -39,9 +40,9 @@ public class Cli {
 		this.args = args;
 		options.addOption(help, "help", false, "show help.");
 		options.addOption(extension, true, "Change default \".txt\" extension");
-		options.addOption(directory, true, "Change default directory");
-		options.addOption(country, true, "Change default country code");
-		options.addOption(city, true, "Change default city code");
+		options.addOption(directory, true, "Change default (java) directory");
+		options.addOption(country, true, "Change default (7) country code");
+		options.addOption(city, true, "Change default (812) city code");
 		
 	}
 
@@ -50,25 +51,27 @@ public class Cli {
 
 		try {
 			CommandLine cmd = parser.parse(options, args);
-
+			ConfigLoader.loadSettings();
+			
 			if (cmd.hasOption(help)) {
 				help();
+				return;
 			} 
 
 			if (cmd.hasOption(country)) {
-				PhoneScanner.setDefaultCountryCode(cmd.getOptionValue(country));
+				ConfigLoader.setCountryCode(cmd.getOptionValue(country));
 			} 
 
 			if (cmd.hasOption(city)) {
-				PhoneScanner.setDefaultCityCode(cmd.getOptionValue(city));
+				ConfigLoader.setCityCode(cmd.getOptionValue(city));
 			}
 
 			if (cmd.hasOption(directory)) {
-				
+				ConfigLoader.setDirectory(cmd.getOptionValue(directory));
 			}
 
 			if(cmd.hasOption(extension)) {
-
+				ConfigLoader.setExtension(cmd.getOptionValue(extension));
 			}
 
 			runApp();
@@ -83,7 +86,9 @@ public class Cli {
 		List<String> phones = new ArrayList<>();
 
 		try {
-			List<Path> fileList = new FileScanner().getFileList(".", ".java");
+			String ext = ConfigLoader.getExtension();
+			String dir = ConfigLoader.getDirectory();
+			List<Path> fileList = new FileScanner().getFileList(dir, ext);
 
 			phones = new DataExtractor().parseFiles(fileList, new PhoneScanner());
 

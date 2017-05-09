@@ -4,8 +4,8 @@ import berberyan.controller.Cli;
 
 public class App {
 	private App(){}
-	
-    public static void main( String[] args ) {
-    		new Cli(args).start();
-    }
+
+	public static void main( String[] args ) {
+		new Cli(args).start();
+	}
 }
