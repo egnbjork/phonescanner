@@ -1,7 +1,10 @@
 package me.berberyan.service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,14 +13,14 @@ public class PhoneScanner {
 	private static final Logger LOGGER = LogManager.getLogger(PhoneScanner.class); 
 	private static final String regex = "^\\+?(\\d)?\\s?\\-?\\(?(\\d{3})?\\)?\\s?\\-?(\\d{3})\\-?(\\d{2}\\-?\\d{2})$";
 	private static final Pattern pattern = Pattern.compile(regex);
-	private final String defaultCountryCode = "7";
-	private final String defaultCityCode = "812";
+	private static final String defaultCountryCode = "7";
+	private static final String defaultCityCode = "812";
 
 	public boolean isGood(String entry) {
 		return Pattern.matches(regex, entry);
 	}
 
-	public String extractPhone(String entry) {
+	public static String getPhone(String entry) {
 		LOGGER.debug("raw entry is " + entry);
 		entry = entry.replaceAll("[^\\d\\+\\(\\)\\s]", "").trim();
 		LOGGER.debug("clean entry is " + entry);
@@ -42,7 +45,15 @@ public class PhoneScanner {
 			LOGGER.debug("+" + country + " (" + city + ") " + firstPart + "-" + lastPart);
 			return ("+" + country + " (" + city + ") " + firstPart + "-" + lastPart);
 		}
-
 		return null;
+	}
+	
+	public List<String> extractPhones(String entry) {
+		String[] phones = entry.split("[^\\d]+");
+		LOGGER.debug("total " + phones.length + " entries");
+		return Arrays.asList(phones).stream()
+				.map(PhoneScanner::getPhone)
+				.filter(n->n!=null)
+				.collect(Collectors.toList());
 	}
 }
