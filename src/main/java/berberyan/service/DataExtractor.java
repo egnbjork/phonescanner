@@ -16,7 +16,7 @@ import berberyan.exceptions.DataExtractionException;
 public class DataExtractor {
 	private static final Logger LOGGER = LogManager.getLogger(DataExtractor.class); 
 	
-	//returns list of strings of defined filePath with the help of defined parser
+	//returns list of phones in defined filePath with the help of defined parser
 	public List<String> parseFiles(List<Path> filePaths, Parser parser) throws DataExtractionException {
 
 		List <String> data = new ArrayList<>();
