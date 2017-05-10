@@ -1,4 +1,4 @@
-package berberyan.service;
+package berberyan.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import berberyan.config.ConfigLoader;
+import org.springframework.stereotype.Component;
 
+import berberyan.config.ConfigLoader;
+import berberyan.service.Parser;
+
+@Component
 public class PhoneScanner implements Parser {
 	private static final String REGEX = "^\\+?(\\d)?\\s?\\-?\\(?(\\d{3})?\\)?\\s?\\-?(\\d{3})\\-?(\\d{2}\\-?\\d{2})$";
 	private static final Pattern pattern = Pattern.compile(REGEX);

@@ -13,6 +13,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import berberyan.service.impl.PhoneScanner;
+
 public class PhoneScannerTest {
 	private static final Logger LOGGER = LogManager.getLogger(PhoneScannerTest.class); 
 	PhoneScanner ps;

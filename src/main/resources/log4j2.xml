@@ -5,13 +5,10 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
-		<Console name="Cli" target="SYSTEM_OUT">
-			<PatternLayout pattern="%msg%n" />
-		</Console>
 	</Appenders>
 	<Loggers>
-		<Root level="info">
-			<AppenderRef ref="Cli" />
+		<Root level="debug">
+			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>
 </Configuration>
