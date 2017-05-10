@@ -33,6 +33,9 @@ public class IndexController {
 	@Autowired
 	Parser parser;
 
+	@Autowired
+	DataExtractor dataExtractor;
+	
 	@GetMapping("/")
 	public String index(Model model, HttpSession session) {
 		return "index";
@@ -46,7 +49,7 @@ public class IndexController {
 			LOGGER.debug("file uploaded");
 			List<Path> filePaths = new ArrayList<>();
 			filePaths.add(uploader.getFilePath());
-			List<String> phones = new DataExtractor().parseFiles(filePaths, parser);
+			List<String> phones = dataExtractor.parseFiles(filePaths, parser);
 			model.addAttribute("phones", phones);
 		} catch (ApacheUploadException e) {
 			LOGGER.error("file cannot be uploaded", e);
