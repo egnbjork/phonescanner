@@ -21,6 +21,7 @@ public class PhoneScanner implements Parser {
 		return Arrays.asList(phones).stream()
 				.map(PhoneScanner::getPhone)
 				.filter(Objects::nonNull)
+				.sorted()
 				.collect(Collectors.toList());
 	}
 
