@@ -62,7 +62,7 @@ public class ConfigLoader {
 	}
 
 	public static void loadSettings() {
-		try (InputStream input = new FileInputStream("config.properties");){
+		try (InputStream input = new FileInputStream("config.properties")){
 			properties.load(input);
 			countryCode = properties.getProperty(COUNTRY_FILE);
 			cityCode = properties.getProperty(CITY_FILE);

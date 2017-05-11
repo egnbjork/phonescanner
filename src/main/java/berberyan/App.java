@@ -1,11 +1,11 @@
 package berberyan;
 
-import berberyan.controller.Cli;
+import berberyan.controller.CommandLineInterface;
 
 public class App {
 	private App(){}
 
 	public static void main( String[] args ) {
-		new Cli(args).start();
+		new CommandLineInterface(args).start();
 	}
 }

@@ -20,8 +20,8 @@ import berberyan.service.DataExtractor;
 import berberyan.service.FileScanner;
 import berberyan.service.PhoneScanner;
 
-public class Cli {
-	private static final Logger LOGGER = LogManager.getLogger(Cli.class); 
+public class CommandLineInterface {
+	private static final Logger LOGGER = LogManager.getLogger(CommandLineInterface.class); 
 	private String[] args = null;
 	private Options options = new Options();
 	private final String country;
@@ -30,7 +30,7 @@ public class Cli {
 	private final String extension;
 	private final String help;
 
-	public Cli(String[] args) {
+	public CommandLineInterface(String[] args) {
 		country = "country";
 		city = "city";
 		directory = "dir";
