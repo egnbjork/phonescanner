@@ -35,7 +35,7 @@ public class PhoneExtractor implements DataExtractor{
 				throw new DataExtractionException(e);
 			}
 		}
-		return data.stream().sorted().collect(Collectors.toList());	
+		return data.stream().distinct().sorted().collect(Collectors.toList());	
 	}
 	
 	private static Stream<String> flatten(List<String> listStream) {
