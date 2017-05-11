@@ -360,7 +360,7 @@ public class PhoneScannerTest {
 		String rawNumber = "С c8888888Стрехзначным кодом города+7812 c1234567С трехзначным кодом города";
 
 		List<String> actualList = ps.extractData(rawNumber);
-		List<String> expectedList = Arrays.asList("+7 (812) 888-8888", expected);
+		List<String> expectedList = Arrays.asList(expected, "+7 (812) 888-8888");
 
 		assertEquals(expectedList, actualList);
 	}
