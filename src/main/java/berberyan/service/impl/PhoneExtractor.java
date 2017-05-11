@@ -29,14 +29,13 @@ public class PhoneExtractor implements DataExtractor{
 				stream.map(parser::extractData)
 				.flatMap(PhoneExtractor::flatten)
 				.distinct()
-				.sorted()
 				.collect(Collectors.toCollection(() -> data));
 			} catch (IOException e) {
 				LOGGER.error("Error in DataExctractor", e);
 				throw new DataExtractionException(e);
 			}
 		}
-		return data;	
+		return data.stream().sorted().collect(Collectors.toList());	
 	}
 	
 	private static Stream<String> flatten(List<String> listStream) {
