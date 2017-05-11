@@ -76,6 +76,7 @@ public class IndexController {
 			filePaths.add(uploader.getFilePath());
 			List<String> phones = dataExtractor.parseFiles(filePaths, parser);
 			model.addAttribute("phones", phones);
+			uploader.deleteFile();
 		} catch (ApacheUploadException e) {
 			LOGGER.error("file cannot be uploaded", e);
 			model.addAttribute(ERROR_ATTR, "file cannot be uploaded");
