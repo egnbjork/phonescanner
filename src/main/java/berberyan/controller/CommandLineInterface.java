@@ -40,7 +40,7 @@ public class CommandLineInterface {
 		this.args = args;
 		options.addOption(help, "help", false, "show help.");
 		options.addOption(extension, true, "Change default \".txt\" extension");
-		options.addOption(directory, true, "Change default (java) directory");
+		options.addOption(directory, true, "Change default (.) directory");
 		options.addOption(country, true, "Change default (7) country code");
 		options.addOption(city, true, "Change default (812) city code");
 		
