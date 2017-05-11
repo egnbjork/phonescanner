@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import berberyan.config.ConfigLoader;
 import berberyan.exceptions.ApacheUploadException;
 import berberyan.exceptions.DataExtractionException;
+import berberyan.exceptions.FileScannerException;
 import berberyan.service.DataExtractor;
+import berberyan.service.FileScanner;
 import berberyan.service.Parser;
+import berberyan.service.impl.PhoneScanner;
 import berberyan.service.uploader.Uploader;
 
 @Controller
@@ -29,18 +33,39 @@ public class IndexController {
 
 	@Autowired
 	Uploader uploader;
-	
+
 	@Autowired
 	Parser parser;
 
 	@Autowired
 	DataExtractor dataExtractor;
-	
+
 	@GetMapping("/")
 	public String index(Model model, HttpSession session) {
 		return "index";
 	}
-	
+
+	@GetMapping("/default")
+	public String getAppPhones(Model model, HttpSession session) {
+		String ext = ConfigLoader.getExtension();
+		String dir = ConfigLoader.getDirectory();
+		List<Path> fileList;
+		try {
+			fileList = new FileScanner().getFileList(dir, ext);
+			
+			List<String> phones = dataExtractor.parseFiles(fileList, new PhoneScanner());
+			model.addAttribute("phones", phones);
+		} catch (FileScannerException e) {
+			LOGGER.error("error while scanning filesystem", e);
+			model.addAttribute(ERROR_ATTR, "error while scanning filesystem");
+		} catch (DataExtractionException e) {
+			LOGGER.error("files cannot be processed", e);
+			model.addAttribute(ERROR_ATTR, "files cannot be processed");
+		}
+
+		return "index";
+	}
+
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String loadFile(HttpServletRequest request, Model model, HttpSession session) {
 		LOGGER.debug("loadFile() invoked");
@@ -60,4 +85,6 @@ public class IndexController {
 		}
 		return "index";
 	}
+
+
 }
